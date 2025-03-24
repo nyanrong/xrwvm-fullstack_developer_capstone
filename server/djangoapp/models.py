@@ -1,7 +1,7 @@
 # Uncomment the following imports before adding the Model code
 
 from django.db import models
-from django.utils.timezone import now
+# from django.utils.timezone import now
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -14,7 +14,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 # - __str__ method to print a car make object
 class CarMake(models.Model):
     name = models.CharField(max_length=20)
-    description = models.CharField(max_length=1000)    
+    description = models.CharField(max_length=1000)
+
     def __str__(self):
         return "Name: " + self.name + "," + "Description: " + self.description
 
@@ -32,24 +33,17 @@ class CarModel(models.Model):
     SEDAN = 'Sedan'
     SUV = 'SUV'
     WAGON = 'Wagon'
-    CAR_TYPES = [
-        (SEDAN, "Sedan"), 
-        (SUV ,"SUV"), 
-        (WAGON, "Wagon")
-    ]
+    CAR_TYPES = [(SEDAN, "Sedan"), (SUV, "SUV"), (WAGON, "Wagon")]
 
     # many-to-one
     car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
     dealer_id = models.IntegerField(default=0)
     name = models.CharField(max_length=100)
     car_type = models.CharField(max_length=10, choices=CAR_TYPES, default=SEDAN)
-    year = models.IntegerField(default=2023,
-        validators=[
-            MaxValueValidator(2023),
-            MinValueValidator(2015)
-        ])
+    year = models.IntegerField(default=2023, validators=[MaxValueValidator(2023), MinValueValidator(2015)])
 
     def __str__(self):
         return "Name: " + self.name + \
                ", Car_make_name: " + self.car_make.name + \
                ", Car_make_description: " + self.car_make.description
+               
