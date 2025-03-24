@@ -1,6 +1,13 @@
 img{
   width: 60%;
+  height: 100%;
+  object-fit: contain;
   align-self: center;
+}
+
+.card-img-container{
+  overflow: hidden;
+  max-height: 100px;
 }
 
 .card{
@@ -11,6 +18,41 @@ img{
   margin-right:5%;
   margin-top: 1%;
   margin-bottom: 1%;
+}
+
+.card-contact-container{
+  border-top: rgb(103, 102, 105) 3px solid;
+  display: flex;  
+  flex-direction: row;
+  margin-left:1%;
+  margin-right:1%;
+  margin-top: 1%;
+  margin-bottom: 5%;
+}
+
+.card-contact-container-child{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;  
+}
+
+.right-border{
+  border-right: rgb(103, 102, 105) 3px solid;
+}
+
+.contact-details-header{
+  font-size: 15px;
+  color: rgb(137, 173, 230);
+  font-weight: bold;
+  text-align: center;
+  margin: 5px;
+}
+.contact-details{
+  font-size: 15px;
+  color: rgb(137, 173, 230);
+  text-align: center;
+  margin: 5px;
 }
 
 .row{
