@@ -40,13 +40,13 @@ class CarModel(models.Model):
     dealer_id = models.IntegerField(default=0)
     name = models.CharField(max_length=100)
     car_type = models.CharField(
-        max_length=10, 
-        choices=CAR_TYPES, 
+        max_length=10,
+        choices=CAR_TYPES,
         default=SEDAN)
     year = models.IntegerField(
-        default=2023, 
+        default=2023,
         validators=[
-            MaxValueValidator(2023), 
+            MaxValueValidator(2023),
             MinValueValidator(2015)])
 
     def __str__(self):
