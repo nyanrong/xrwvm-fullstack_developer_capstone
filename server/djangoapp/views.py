@@ -25,13 +25,13 @@ logger = logging.getLogger(__name__)
 def get_cars(request):
     count = CarMake.objects.filter().count()
     print(count)
-    if(count == 0):
+    if (count == 0):
         initiate()
     car_models = CarModel.objects.select_related('car_make')
     cars = []
     for car_model in car_models:
         res_dict = {
-            "CarModel": car_model.name, 
+            "CarModel": car_model.name,
             "CarMake": car_model.car_make.name
         }
         cars.append(res_dict)
@@ -53,6 +53,7 @@ def login_user(request):
         login(request, user)
         data = {"userName": username, "status": "Authenticated"}
     return JsonResponse(data)
+
 
 # Create a `logout_request` view to handle sign out request
 def logout_request(request):
@@ -80,22 +81,23 @@ def registration(request):
         username_exist = True
     except Exception as err:
         # If not, simply log this is a new user
-        logger.debug("{} is new user".format(username))
+        # logger.debug("{} is new user".format(username))
+        logger.debug(f"{username} is new user - err {err}")
 
     # If it is a new user
     if not username_exist:
         # Create user in auth_user table
         user = User.objects.create_user(
-            username=username, 
-            first_name=first_name, 
-            last_name=last_name, 
-            password=password, 
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            password=password,
             email=email)
         # Login the user and redirect to list page
         login(request, user)
         data = {"userName": username, "status": "Authenticated"}
         return JsonResponse(data)
-    else :
+    else:
         data = {"userName": username, "error": "Already Registered"}
         return JsonResponse(data)
 
@@ -110,6 +112,7 @@ def get_dealerships(request, state="All"):
     dealerships = get_request(endpoint)
     return JsonResponse({"status": 200, "dealers": dealerships})
 
+
 # Create a `get_dealer_reviews` view to render the reviews of a dealer
 def get_dealer_reviews(request, dealer_id):
     if (dealer_id):
@@ -117,8 +120,8 @@ def get_dealer_reviews(request, dealer_id):
         dealer_reviews = get_request(endpoint)
 
         for review_detail in dealer_reviews:
-            sent_dict = analyze_review_sentiments(review_detail ["review"])
-            review_detail ["sentiment"] = sent_dict["sentiment"]
+            sent_dict = analyze_review_sentiments(review_detail["review"])
+            review_detail["sentiment"] = sent_dict["sentiment"]
         return JsonResponse({"status": 200, "reviews": dealer_reviews})
     else:
         return JsonResponse({"status": 400, "message": "Bad Request"})
@@ -133,14 +136,18 @@ def get_dealer_details(request, dealer_id):
     else:
         return JsonResponse({"status": 400, "message": "Bad Request"})
 
+
 # Create a `add_review` view to submit a review
 def add_review(request):
-    if(request.user.is_anonymous == False):
+    if (request.user.is_anonymous is False):
         data = json.loads(request.body)
         try:
             response = post_review(data)
+            print(response)
             return JsonResponse({"status": 200})
         except Exception as err:
-            return JsonResponse({"status": 401, "message": "Error in posting review"})
+            return JsonResponse({
+                "status": 401, 
+                "message": f"Error in posting review - {err}"})
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
